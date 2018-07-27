@@ -1,30 +1,47 @@
 import * as actions from "./actions"
 
-export default (state = {}, action) => {
+function createCards() {
+  return new Array(10000)
+    .fill(null)
+    .map((_, id) => ({
+      id,
+      name: `card ${id}`,
+      done: id % 2
+    }))
+}
+
+export default (state = {
+  cardIds: []
+}, action) => {
   switch(action.type) {
     case actions.LOAD:
-      return new Array(10000)
-        .fill(null)
-        .map((_, id) => ({
-          id,
-          name: `card ${id}`,
-          done: id % 2
-        }))
+      const cards = createCards()
+      return {
+        cardsById: cards,
+        cardIds: Object.keys(cards).map(i => cards[i].id)
+      }
     case actions.ADD: {
       const { card } = action
       return {
         ...state,
-        [card.id]: card
+        cardIds: [card.id, state.cardIds],
+        cardsById: {
+          ...state.cardsById,
+          [card.id]: card
+        }
       }
     }
     case actions.TOGGLE: {
-      const { cardId } = action
-      const card = state[cardId]
+      const { id } = action
+      const card = state.cardsById[id]
       return {
         ...state,
-        [cardId]: {
-          ...card,
-          done: !card.done
+        cardsById: {
+          ...state.cardsById,
+          [id]: {
+            ...card,
+            done: !card.done
+          }
         }
       }
     }

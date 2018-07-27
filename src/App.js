@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import v4 from "uuid"
-import { ADD, TOGGLE, LOAD } from "./actions"
+import { ADD, LOAD } from "./actions"
 import Card from "./Card"
 import "./App.css";
 
@@ -16,15 +16,14 @@ class App extends Component {
   }
 
   render() {
-    const {cards, toggle, add} = this.props
-    if(!cards.length) return null
+    const {cardIds, toggle, add} = this.props
+    
     return (
       <div className="App">
-        {cards.map((card) => (
+        {cardIds.map((cardId) => (
           <Card
-            key={card.id}
-            card={card}
-            toggle={() => toggle(card.id)}
+            key={cardId}
+            cardId={cardId}
           />
         ))}
         <button onClick={add}>+</button>
@@ -34,14 +33,12 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const cardIds = Object.keys(state)
-  const cards = cardIds.map(id => state[id])
-  return { cards }
+  const cardIds = state.cardIds
+  return { cardIds }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   add: card => dispatch({type: ADD, card}),
-  toggle: cardId => dispatch({type: TOGGLE, cardId}),
   load: () => dispatch({type: LOAD}),
 })
 
