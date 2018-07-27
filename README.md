@@ -1,3 +1,3 @@
-## React Redux Kanban Tutorial
+## React Redux 10,000 Todos Tutorial
 
-This is the example code for my React Redux Kanban Tutorial. Watch the video here! https://youtu.be/-kORhIzQ43M
+Example code for my upcoming youtube tutorial about react redux performance
